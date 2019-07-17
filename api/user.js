@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const User = require("../models/Request");
+const User = require("../models/User");
 const getAll = () => User.find();
 const getOne = id => User.findById(id);
 const updateOne = (id, data) => User.findByIdAndUpdate(id, data);

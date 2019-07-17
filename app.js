@@ -1,31 +1,39 @@
 require("dotenv").config();
-
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+require("./config/db-connection");
+require("./config/passport");
 const express = require("express");
-const mongoose = require("mongoose");
-const logger = require("morgan");
-const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const passport = require("passport");
-const cloudinaryUploader = require("../config/cloudinary.js");
-
-mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
-  .then(x => {
-    console.log(
-      `Connected to Mongo! Database name: "${x.connections[0].name}"`
-    );
-  })
-  .catch(err => {
-    console.error("Error connecting to mongo", err);
-  });
-
 const app = express();
+const cors = require("cors");
 
-// Middleware Setup
-app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-module.exports = app;
+//authenticating route
+const authRoute = require("./auth/auth");
+app.use("/auth", authRoute);
+
+//api routes
+const tagAPI = require("./api/tag");
+const userAPI = require("./api/user");
+const articleAPI = require("./api/article");
+app.use("/api/users", userAPI.router);
+app.use("/api/tags", tagAPI.router);
+app.use("/api/articles", articleAPI.router);
+
+app.listen(process.env.PORT, () => {
+  console.log("App hosted on: ", process.env.SITE_URL);
+});
