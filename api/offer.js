@@ -1,7 +1,6 @@
 const express = require("express");
 const router = new express.Router();
 const Offer = require("../models/Offer");
-const uploader = require("./../config/cloudinary");
 const getAll = () => Offer.find();
 const getOne = id => Offer.findById(id);
 const updateOne = (id, data) => Offer.findByIdAndUpdate(id, data);
@@ -24,7 +23,7 @@ router.get("/:id", (req, res) => {
     .catch(error => res.status(500).send("Something went wrong"));
 });
 
-router.post("/", uploader.array("coverImages", 3), (req, res) => {
+router.post("/", (req, res) => {
   console.log(req.body);
   const {
     name,
@@ -44,11 +43,6 @@ router.post("/", uploader.array("coverImages", 3), (req, res) => {
     time,
     userAccepting
   };
-
-  req.files.forEach(element => {
-    // console.log(element);
-    newOffer.coverImages.push(element.secure_url);
-  });
 
   console.log(newOffer);
   create(newOffer)

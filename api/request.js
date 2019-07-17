@@ -1,12 +1,11 @@
 const express = require("express");
 const router = new express.Router();
 const Request = require("../models/Request");
-const uploader = require("./../config/cloudinary");
-const getAll = () => Offer.find();
-const getOne = id => Offer.findById(id);
-const updateOne = (id, data) => Offer.findByIdAndUpdate(id, data);
-const deleteOne = id => Offer.findByIdAndDelete(id);
-const create = data => Offer.create(data);
+const getAll = () => Request.find();
+const getOne = id => Request.findById(id);
+const updateOne = (id, data) => Request.findByIdAndUpdate(id, data);
+const deleteOne = id => Request.findByIdAndDelete(id);
+const create = data => Request.create(data);
 
 router.get("/", (req, res) => {
   getAll()
@@ -24,7 +23,7 @@ router.get("/:id", (req, res) => {
     .catch(error => res.status(500).send("Something went wrong"));
 });
 
-router.post("/", uploader.array("coverImages", 3), (req, res) => {
+router.post("/", (req, res) => {
   console.log(req.body);
   const {
     name,
@@ -33,25 +32,20 @@ router.post("/", uploader.array("coverImages", 3), (req, res) => {
     location,
     tags,
     time,
-    userAccepting
+    acceptingUser
   } = req.body;
-  const newOffer = {
+  const newRequest = {
     name,
     userId,
     description,
     location,
     tags,
     time,
-    userAccepting
+    acceptingUser
   };
 
-  req.files.forEach(element => {
-    // console.log(element);
-    newOffer.coverImages.push(element.secure_url);
-  });
-
-  console.log(newArticle);
-  create(newArticle)
+  console.log(newRequest);
+  create(newRequest)
     .then(dbRes => res.status(200).send(dbRes.body))
     .catch(err => res.status(500).send("Something went wrong"));
 });
