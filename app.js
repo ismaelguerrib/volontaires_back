@@ -27,12 +27,12 @@ const authRoute = require("./auth/auth");
 app.use("/auth", authRoute);
 
 //api routes
-const tagAPI = require("./api/tag");
+const offerAPI = require("./api/offer");
 const userAPI = require("./api/user");
-const articleAPI = require("./api/article");
+const requestAPI = require("./api/request");
 app.use("/api/users", userAPI.router);
-app.use("/api/tags", tagAPI.router);
-app.use("/api/articles", articleAPI.router);
+app.use("/api/offers", offerAPI.router);
+app.use("/api/requests", requestAPI.router);
 
 app.listen(process.env.PORT, () => {
   console.log("App hosted on: ", process.env.SITE_URL);
