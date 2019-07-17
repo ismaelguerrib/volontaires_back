@@ -30,7 +30,6 @@ requestSchema = new mongoose.Schema({
     type: Array
   }
 });
-requestSchema.index({ email: 1 }, { unique: true }); // ensure unique email
 const RequestModel = mongoose.model("Request", requestSchema);
 
 module.exports = RequestModel;

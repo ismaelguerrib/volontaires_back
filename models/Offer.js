@@ -31,7 +31,7 @@ const offerSchema = new mongoose.Schema({
   }
 });
 
-offerSchema.index({ email: 1 }, { unique: true }); // ensure unique email
+// offerSchema.index({ email: 1 }, { unique: true }); // ensure unique email
 const OfferModel = mongoose.model("Offer", offerSchema);
 
 module.exports = OfferModel;

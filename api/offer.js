@@ -44,10 +44,10 @@ router.post("/", (req, res) => {
     userAccepting
   };
 
-  console.log(newOffer);
+  console.log("hello,", newOffer);
   create(newOffer)
     .then(dbRes => res.status(200).send(dbRes.body))
-    .catch(err => res.status(500).send("Something went wrong"));
+    .catch(err => res.status(500).send(err, "Something went wrong Bro"));
 });
 
 router.delete("/:id", (req, res) => {
