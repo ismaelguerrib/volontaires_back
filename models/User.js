@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
   currentOffers: {
     type: Array
   },
+  picture: {
+    type: String,
+    default: "/images/download.png"
+  },
   completedTasks: {
     type: Array
   },
