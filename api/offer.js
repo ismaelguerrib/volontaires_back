@@ -25,23 +25,14 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   console.log(req.body);
-  const {
-    name,
-    userId,
-    description,
-    location,
-    tags,
-    time,
-    userAccepting
-  } = req.body;
+  const { name, userId, description, location, tags, time } = req.body;
   const newOffer = {
     name,
     userId,
     description,
     location,
     tags,
-    time,
-    userAccepting
+    time
   };
 
   console.log("hello,", newOffer);
