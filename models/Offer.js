@@ -19,6 +19,7 @@ const offerSchema = new mongoose.Schema({
   },
   tags: {
     type: Array,
+    enum: ["Take a walk", "DIY", "Admiministrative", "Learn", "Nursering", "Other" ],
     required: true
   },
   time: {
