@@ -24,6 +24,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
+  console.log(req.body);
   create(req.body)
     .then(dbRes => res.status(200).send(dbRes))
     .catch(err => res.status(500).send("Something went wrong"));
