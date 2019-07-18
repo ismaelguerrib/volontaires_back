@@ -20,8 +20,15 @@ requestSchema = new mongoose.Schema({
     required: true
   },
   tags: {
-    type: Array,
-    enum: ["Take a walk", "DIY", "Admiministrative", "Learn", "Nursering", "Other" ],
+    type: String,
+    enum: [
+      "Take a walk",
+      "DIY",
+      "Admiministrative",
+      "Learn",
+      "Nursering",
+      "Other"
+    ],
     required: true
   },
   time: {
