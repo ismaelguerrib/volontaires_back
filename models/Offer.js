@@ -2,36 +2,36 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const offerSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   userId: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   description: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   location: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   tags: {
-    type: String,
-    enum: [
-      "Take a walk",
-      "DIY",
-      "Admiministrative",
-      "Learn",
-      "Nursering",
-      "Other"
-    ],
-    required: true
+    type: String
+    // enum: [
+    //   "Take a walk",
+    //   "DIY",
+    //   "Admiministrative",
+    //   "Learn",
+    //   "Nursering",
+    //   "Other"
+    // ]
+    // required: true
   },
   time: {
-    type: Date,
-    required: true
+    type: Date
+    // required: true
   },
 
   userAccepting: [{ type: Schema.Types.ObjectId, ref: "User" }],
