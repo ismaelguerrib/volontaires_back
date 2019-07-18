@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
   feedback: [{ type: Schema.Types.ObjectId, ref: "Feedback" }]
 });
 
-userSchema.index({ email: 1 }, { unique: true }); // ensure unique email
+// userSchema.index({ email: 1 }, { unique: true }); // ensure unique email
 const UserModel = mongoose.model("User", userSchema);
 
 module.exports = UserModel;
