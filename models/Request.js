@@ -28,7 +28,12 @@ requestSchema = new mongoose.Schema({
   },
   acceptingUser: {
     type: Array
-  }
+  },
+  isAccepted: {
+    type: Boolean,
+    default: false
+  },
+  feedback: [{ type: Schema.Types.ObjectId, ref: "Feedback" }]
 });
 const RequestModel = mongoose.model("Request", requestSchema);
 

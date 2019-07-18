@@ -21,28 +21,25 @@ const userSchema = new mongoose.Schema({
   service: {
     type: String,
     required: true,
-    enum: ["helpRequester", "helpOfferer"]
+    enum: ["Help Requester", "Help Offerer"]
   },
   age: {
     type: Number,
     required: true
   },
-  currentOffers: {
-    type: Array
-  },
   picture: {
     type: String,
     default: "/images/download.png"
   },
-  completedTasks: {
-    type: Array
-  },
-  currentRequests: {
-    type: Array
-  },
-  completedRequests: {
-    type: Array
-  }
+  currentOffers: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
+
+  completedOffer: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
+
+  currentRequests: [{ type: Schema.Types.ObjectId, ref: "Request" }],
+
+  completedRequests: [{ type: Schema.Types.ObjectId, ref: "Request" }],
+
+  feedback: [{ type: Schema.Types.ObjectId, ref: "Feedback" }]
 });
 
 userSchema.index({ email: 1 }, { unique: true }); // ensure unique email

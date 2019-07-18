@@ -24,8 +24,10 @@ const offerSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  userAccepting: {
-    type: Array
+  userAccepting: [{ type: Schema.Types.ObjectId, ref: "Offer" }],
+  isAccepted: {
+    type: Boolean,
+    default: false
   }
 });
 
