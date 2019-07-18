@@ -1,31 +1,31 @@
 const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   firstname: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   lastname: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   email: {
     type: String,
-    required: true,
-    unique: true,
+    // required: true,
+    // unique: true,
     index: true
   },
   password: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   service: {
     type: String,
-    required: true,
+    // required: true,
     enum: ["Help Requester", "Help Offerer"]
   },
   age: {
-    type: Number,
-    required: true
+    type: Number
+    // required: true
   },
   picture: {
     type: String,

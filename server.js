@@ -30,9 +30,11 @@ app.use("/auth", authRoute);
 const offerAPI = require("./api/offer");
 const userAPI = require("./api/user");
 const requestAPI = require("./api/request");
+const feedBackAPI = require("./api/feedback");
 app.use("/api/users", userAPI.router);
 app.use("/api/offers", offerAPI.router);
 app.use("/api/requests", requestAPI.router);
+app.use("/api/feedback", feedBackAPI.router);
 
 app.listen(process.env.PORT, () => {
   console.log("App hosted on: ", process.env.SITE_URL);
