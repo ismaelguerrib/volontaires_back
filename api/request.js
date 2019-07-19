@@ -47,7 +47,10 @@ router.post("/", (req, res) => {
   console.log(newRequest);
   create(newRequest)
     .then(dbRes => res.status(200).send(dbRes.body))
-    .catch(err => res.status(500).send("Something went wrong"));
+    .catch(err => {
+      console.log(err);
+      res.status(500).send("Something went wrong");
+    });
 });
 
 router.delete("/:id", (req, res) => {
