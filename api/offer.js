@@ -3,7 +3,8 @@ const router = new express.Router();
 const Offer = require("../models/Offer");
 const getAll = () => Offer.find();
 const getOne = id => Offer.findById(id);
-const updateOne = (id, data) => Offer.findByIdAndUpdate(id, data);
+const updateOne = (id, data) =>
+  Offer.findByIdAndUpdate(id, data, { new: true });
 const deleteOne = id => Offer.findByIdAndDelete(id);
 const create = data => Offer.create(data);
 
@@ -51,9 +52,12 @@ router.delete("/:id", (req, res) => {
 
 router.patch("/:id", (req, res) => {
   console.log("ici", req.body);
-  updateOne(req.params.id, req.body).then(updatedDocument =>
-    res.status(200).send(updatedDocument)
-  );
+  updateOne(req.params.id, req.body)
+    .then(updatedDocument => {
+      console.log(updatedDocument);
+      res.status(200).send(updatedDocument);
+    })
+    .catch(err => console.log(err));
 });
 
 //TODO Validation ??
