@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 requestSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   userId: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   description: {
     type: String,
-    required: true,
+    // required: true,
     unique: true,
     index: true
   },
@@ -28,12 +28,12 @@ requestSchema = new mongoose.Schema({
       "Learn",
       "Nursering",
       "Other"
-    ],
-    required: true
+    ]
+    // required: true
   },
   time: {
-    type: Date,
-    required: true
+    type: Date
+    // required: true
   },
   acceptingUser: {
     type: Array

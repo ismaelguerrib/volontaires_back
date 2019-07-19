@@ -50,6 +50,7 @@ router.delete("/:id", (req, res) => {
 });
 
 router.patch("/:id", (req, res) => {
+  console.log("ici", req.body);
   updateOne(req.params.id, req.body).then(updatedDocument =>
     res.status(200).send(updatedDocument)
   );
