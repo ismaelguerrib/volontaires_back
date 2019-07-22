@@ -32,7 +32,7 @@ app.use(passport.session());
 //authenticating route
 const authRoute = require("./auth/auth");
 const mailer = require("./mailer/mailer");
-app.use("/auth", authRoute);
+app.use("/", authRoute);
 app.use(mailer);
 
 //api routes
