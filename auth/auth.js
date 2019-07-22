@@ -8,15 +8,16 @@ const minPasswordLength = 4;
 
 router.post("/signup", uploader.single("avatar"), (req, res, next) => {
   // console.log("file ?", req.file);
-  // console.log(req.body);
-  const { name, lastname, password, email, avatar } = req.body;
+  console.log(req.body);
+
+  const { firstname, lastname, password, email, avatar, role, age } = req.body;
 
   var errorMsg = null;
 
   // more on http status
   // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
-  if (!name || !lastname || !password || !email)
+  if (!firstname || !lastname || !password || !email)
     errorMsg = {
       message: "Provide username and password",
       status: "warning",
@@ -37,9 +38,11 @@ router.post("/signup", uploader.single("avatar"), (req, res, next) => {
   // more info : https://en.wikipedia.org/wiki/Salt_(cryptography)
 
   const newUser = {
-    name,
+    firstname,
     lastname,
     email,
+    role,
+    age,
     password: hashPass
   };
 
