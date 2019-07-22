@@ -109,20 +109,21 @@ router.post("/signin", (req, res, next) => {
       // You may find usefull to send some other infos
       // dont send sensitive informations back to the client
       // let's choose the exposed user below
+
       const { _id: id, name, lastname, email, avatar, role } = req.user;
-      next(
-        res.status(200).json({
-          loginStatus: true,
-          user: {
-            id,
-            name,
-            lastname,
-            email,
-            avatar,
-            role
-          }
-        })
-      );
+      // next(
+      res.status(200).json({
+        loginStatus: true,
+        user: {
+          id,
+          name,
+          lastname,
+          email,
+          avatar,
+          role
+        }
+      });
+      // );
     });
   })(req, res, next);
 });
