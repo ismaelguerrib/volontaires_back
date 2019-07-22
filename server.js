@@ -9,7 +9,7 @@ const app = express();
 const cors = require("cors");
 
 const corsOptions = {
-  origin: [process.env.frontURL],
+  origin: [process.env.REACT_DOMAIN],
   credentials: true, // required to let axios pass the cookie with any request
   optionsSuccessStatus: 200
 };
