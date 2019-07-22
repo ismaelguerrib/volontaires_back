@@ -1,137 +1,156 @@
 const express = require("express");
 const router = new express.Router();
-const bcrypt = require("bcrypt");
 const passport = require("passport");
-const User = require("../models/User");
-const cloudinaryUploader = require("../config/cloudinary.js");
+const bcrypt = require("bcrypt");
+const userAPI = require("./../api/user");
+const uploader = require("./../config/cloudinary");
+const minPasswordLength = 4;
 
-router.post(
-  "/signup",
-  cloudinaryUploader.single("avatar"),
-  (req, res, next) => {
-    const avatar = req.file.secure_url;
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
-    const email = req.body.email;
-    const password = req.body.password;
-    if (!lastname || !firstname || !password || !email) {
-      res.status(400).json({ message: "Provide username and password" });
-      return;
-    }
+router.post("/signup", uploader.single("avatar"), (req, res, next) => {
+  // console.log("file ?", req.file);
+  // console.log(req.body);
+  const { name, lastname, password, email, avatar } = req.body;
 
-    if (password.length < 4) {
-      res.status(400).json({
-        message:
-          "Please make your password at least 8 characters long for security purposes."
-      });
-      return;
-    }
+  var errorMsg = null;
 
-    User.findOne({ email }, (err, foundUser) => {
-      if (err) {
-        res.status(500).json({ message: "Username check went bad." });
-        return;
-      }
+  // more on http status
+  // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
-      if (foundUser) {
-        res
-          .status(400)
-          .json({ message: "Username taken. Choose another one." });
-        return;
-      }
+  if (!name || !lastname || !password || !email)
+    errorMsg = {
+      message: "Provide username and password",
+      status: "warning",
+      httpStatus: 403 // 403	Forbidden
+    };
 
-      const salt = bcrypt.genSaltSync(10);
-      const hashPass = bcrypt.hashSync(password, salt);
+  if (password.length < minPasswordLength)
+    errorMsg = {
+      message: `Please make your password at least ${minPasswordLength} characters`,
+      status: "warning",
+      httpStatus: 403 // 403	Forbidden
+    };
 
-      const aNewUser = new User({
-        firstname,
-        lastname,
-        password: hashPass,
-        email: email,
-        avatar: avatar
-      });
+  if (errorMsg) return res.status(errorMsg.httpStatus).json(errorMsg);
 
-      aNewUser.save(err => {
+  const salt = bcrypt.genSaltSync(10);
+  const hashPass = bcrypt.hashSync(password, salt);
+  // more info : https://en.wikipedia.org/wiki/Salt_(cryptography)
+
+  const newUser = {
+    name,
+    lastname,
+    email,
+    password: hashPass
+  };
+
+  if (req.file) newUser.avatar = req.file.secure_url;
+
+  userAPI
+    .create(newUser)
+    .then(newUserFromDB => {
+      // passport in action below
+      req.login(newUserFromDB, err => {
+        console.log("passport login error", err);
         if (err) {
-          res
-            .status(400)
-            .json({ message: "Saving user to database went wrong." });
-          return;
+          return res.status(500).json({
+            message: "Something went wrong with automatic login after signup"
+          });
         }
-
-        // Automatically log in user after sign up
-        // .login() here is actually predefined passport method
-        req.login(aNewUser, err => {
-          if (err) {
-            res.status(500).json({ message: "Login after signup went bad." });
-            return;
-          }
-          // Send the user's information to the frontend
-          // We can use also: res.status(200).json(req.user);
-          //Maybe better not to send the hashed password back to the user : )
-
-          const user = {
-            firstname: aNewUser.firstname,
-            lastname: aNewUser.lastname,
-            avatar: aNewUser.avatar
-          };
-
-          res.status(200).json(user);
-        });
+        res.status(200).json(req.user);
       });
+    })
+    .catch(apiErr => {
+      const error = {
+        11000: "The email already exists in database"
+      };
+      // you may want to use more error code(s) for precise error handling ...
+
+      const message = {
+        text: `Something went wrong saving user to Database : ${
+          error[apiErr.code]
+        }`,
+        status: "warning"
+      };
+
+      res.status(409).json({ message }); // 409	Conflict
+      return;
     });
-  }
-);
+});
 
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, theUser, failureDetails) => {
+router.post("/signin", (req, res, next) => {
+  passport.authenticate("local", (err, user, failureDetails) => {
+    var errorMsg = null;
+
     if (err) {
-      res
-        .status(500)
-        .json({ message: "Something went wrong authenticating user" });
-      return;
+      console.log("signin error details", failureDetails);
+
+      errorMsg = {
+        message: "Something went wrong authenticating user",
+        status: "error",
+        httpStatus: 520
+      };
     }
 
-    if (!theUser) {
-      // "failureDetails" contains the error messages
-      // from our logic in "LocalStrategy" { message: '...' }.
+    if (!user)
+      errorMsg = {
+        message: "sorry, we coun't find that account",
+        status: "warning",
+        httpStatus: 404
+      };
 
-      res.status(401).json(failureDetails);
-      return;
-    }
+    if (errorMsg) return res.status(errorMsg.httpStatus).json(errorMsg);
 
-    // save user in session
-    req.login(theUser, err => {
+    req.logIn(user, function(err) {
       if (err) {
-        res.status(500).json({ message: "Session save went bad." });
-        return;
+        console.log("passport login error", err);
+        return res.json({ message: "Something went wrong logging in" });
       }
-
-      // We are now logged in (that's why we can also send req.user)
-      res.status(200).json(theUser);
+      // We are now logged in (notice here, only req._id is sent back to client)
+      // You may find usefull to send some other infos
+      // dont send sensitive informations back to the client
+      // let's choose the exposed user below
+      const { _id: id, name, lastname, email, avatar, role } = req.user;
+      next(
+        res.status(200).json({
+          loginStatus: true,
+          user: {
+            id,
+            name,
+            lastname,
+            email,
+            avatar,
+            role
+          }
+        })
+      );
     });
   })(req, res, next);
 });
 
-router.post("/logout", (req, res, next) => {
-  // req.logout() is defined by passport
-  req.logout();
-  res.status(200).json({ message: "Log out success!" });
+router.post("/signout", (req, res, next) => {
+  req.logout(); // utils function provided by passport
+  res.json({ message: "Success" });
 });
 
 router.get("/loggedin", (req, res, next) => {
-  // req.isAuthenticated() is defined by passport
+  console.log("ask is loggedin ???", req.isAuthenticated());
   if (req.isAuthenticated()) {
-    //   const user = {
-    //       firstname: req.user.firstname,
-    //       lastname: req.user.lastname,
-    //       avatar = req.user.avatar
-    //   }
-
-    res.status(200).json(req.user);
-    return;
+    // method provided by passport
+    const { _id: id, name, lastname, email, avatar, role } = req.user;
+    return res.status(200).json({
+      loginStatus: true,
+      message: "authorized",
+      user: {
+        id,
+        name,
+        lastname,
+        email,
+        avatar,
+        role
+      }
+    });
   }
-  res.status(403).json({ message: "Unauthorized" });
+  res.status(403).json({ loginStatus: false, message: "Unauthorized" });
 });
 
 module.exports = router;
