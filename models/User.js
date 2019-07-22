@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String
     // required: true
   },
-  service: {
+  role: {
     type: String,
     // required: true,
     enum: ["Help Requester", "Help Offerer"]
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     type: Number
     // required: true
   },
-  picture: {
+  avatar: {
     type: String,
     default: "/images/download.png"
   },
