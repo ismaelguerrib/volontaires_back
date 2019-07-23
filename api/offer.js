@@ -13,9 +13,19 @@ const updateWhat = (id, data) =>
   );
 const deleteOne = id => Offer.findByIdAndDelete(id);
 const create = data => Offer.create(data);
+const findByOwner = data => Offer.find({ userId: data });
 
 router.get("/", (req, res) => {
   getAll()
+    .then(dbRes => {
+      res.status(200).send(dbRes);
+    })
+    .catch(error => res.status(500).send("Something went wrong"));
+});
+
+router.get("/findbyowner/:id", (req, res) => {
+  console.log(req.params.id);
+  findByOwner(req.params.id)
     .then(dbRes => {
       res.status(200).send(dbRes);
     })

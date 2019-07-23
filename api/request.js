@@ -5,9 +5,16 @@ const getAll = () => Request.find();
 const getOne = id => Request.findById(id);
 const updateOne = (id, data) => Request.findByIdAndUpdate(id, data);
 const updateWhat = (id, data) =>
-  Request.findByIdAndUpdate(id, { $push: { data } });
+  Request.findByIdAndUpdate(
+    id,
+    { $push: { userAccepting: data } },
+    { new: true }
+  );
+const acceptTask = (id, data) =>
+  Request.findByIdAndUpdate(id, { $push: { isAccepted: data } }, { new: true });
 const deleteOne = id => Request.findByIdAndDelete(id);
 const create = data => Request.create(data);
+const findByOwner = data => Request.find({ userId: data });
 
 router.get("/", (req, res) => {
   getAll()
@@ -55,6 +62,15 @@ router.post("/", (req, res) => {
     });
 });
 
+router.get("/findbyowner/:id", (req, res) => {
+  console.log(req.params.id);
+  findByOwner(req.params.id)
+    .then(dbRes => {
+      res.status(200).send(dbRes);
+    })
+    .catch(error => res.status(500).send("Something went wrong"));
+});
+
 router.delete("/:id", (req, res) => {
   deleteOne(req.params.id)
     .then(dbRes => {
@@ -69,7 +85,13 @@ router.patch("/:id", (req, res) => {
   );
 });
 router.patch("/accept/:id", (req, res) => {
-  updateWhat(req.params.id).then(updatedDocument =>
+  updateWhat(req.params.id, req.body.userAccepting).then(updatedDocument =>
+    res.status(200).send(updatedDocument)
+  );
+});
+router.patch("/isaccepted/:id", (req, res) => {
+  console.log(req.body);
+  updateWhat(req.params.id, req.body).then(updatedDocument =>
     res.status(200).send(updatedDocument)
   );
 });
