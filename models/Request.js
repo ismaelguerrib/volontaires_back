@@ -6,8 +6,8 @@ requestSchema = new mongoose.Schema({
     // required: true
   },
   userId: {
-    type: String
-    // required: true
+    type: Schema.Types.ObjectId,
+    ref: "User" // required: true
   },
   description: {
     type: String,

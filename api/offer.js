@@ -25,7 +25,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  console.log(req.body);
+  console.log("req body tamere", req.body);
   const { name, userId, description, location, tags, time } = req.body;
   const newOffer = {
     name,
@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
     time
   };
 
-  console.log("hello,", newOffer);
+  console.log("sent object", newOffer);
   create(newOffer)
     .then(dbRes => res.status(200).send(dbRes.body))
     .catch(err => res.status(500).send(err, "Something went wrong Bro"));
