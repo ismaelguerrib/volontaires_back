@@ -4,6 +4,8 @@ const Request = require("../models/Request");
 const getAll = () => Request.find();
 const getOne = id => Request.findById(id);
 const updateOne = (id, data) => Request.findByIdAndUpdate(id, data);
+const updateWhat = (id, data) =>
+  Request.findByIdAndUpdate(id, { $push: { data } });
 const deleteOne = id => Request.findByIdAndDelete(id);
 const create = data => Request.create(data);
 
@@ -63,6 +65,11 @@ router.delete("/:id", (req, res) => {
 
 router.patch("/:id", (req, res) => {
   updateOne(req.params.id).then(updatedDocument =>
+    res.status(200).send(updatedDocument)
+  );
+});
+router.patch("/accept/:id", (req, res) => {
+  updateWhat(req.params.id).then(updatedDocument =>
     res.status(200).send(updatedDocument)
   );
 });

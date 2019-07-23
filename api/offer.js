@@ -5,6 +5,12 @@ const getAll = () => Offer.find();
 const getOne = id => Offer.findById(id);
 const updateOne = (id, data) =>
   Offer.findByIdAndUpdate(id, data, { new: true });
+const updateWhat = (id, data) =>
+  Offer.findByIdAndUpdate(
+    id,
+    { $push: { userAccepting: data } },
+    { new: true }
+  );
 const deleteOne = id => Offer.findByIdAndDelete(id);
 const create = data => Offer.create(data);
 
@@ -58,6 +64,12 @@ router.patch("/:id", (req, res) => {
       res.status(200).send(updatedDocument);
     })
     .catch(err => console.log(err));
+});
+
+router.patch("/accept/:id", (req, res) => {
+  updateWhat(req.params.id, req.body.userAccepting).then(updatedDocument =>
+    res.status(200).send(updatedDocument)
+  );
 });
 
 //TODO Validation ??
