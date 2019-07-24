@@ -16,6 +16,8 @@ const acceptUser = (id, data) =>
 const deleteOne = id => Offer.findByIdAndDelete(id);
 const create = data => Offer.create(data);
 const findByOwner = data => Offer.find({ userId: data });
+const deleteOtherUsers = (id, acceptedUserId) =>
+  Offer.findByIdAndUpdate(id, { userAccepting: acceptedUserId });
 
 router.get("/", (req, res) => {
   getAll()
@@ -26,7 +28,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/findbyowner/:id", (req, res) => {
-  console.log(req.params.id);
+  console.log("owner:", req.params.id);
   findByOwner(req.params.id)
     .then(dbRes => {
       res.status(200).send(dbRes);
@@ -83,8 +85,16 @@ router.patch("/accept/:id", (req, res) => {
     res.status(200).send(updatedDocument)
   );
 });
+
 router.patch("/isaccepted/:id", (req, res) => {
   console.log(req.body);
+  acceptUser(req.params.id, req.body).then(updatedDocument =>
+    res.status(200).send(updatedDocument)
+  );
+});
+
+router.patch("/removeotherusers/:id", (req, res) => {
+  console.log(req);
   acceptUser(req.params.id, req.body).then(updatedDocument =>
     res.status(200).send(updatedDocument)
   );
