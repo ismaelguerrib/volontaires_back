@@ -11,6 +11,8 @@ const updateWhat = (id, data) =>
     { $push: { userAccepting: data } },
     { new: true }
   );
+const acceptUser = (id, data) =>
+  Offer.findByIdAndUpdate(id, { $push: { isAccepted: data } }, { new: true });
 const deleteOne = id => Offer.findByIdAndDelete(id);
 const create = data => Offer.create(data);
 const findByOwner = data => Offer.find({ userId: data });
@@ -81,7 +83,12 @@ router.patch("/accept/:id", (req, res) => {
     res.status(200).send(updatedDocument)
   );
 });
-
+router.patch("/isaccepted/:id", (req, res) => {
+  console.log(req.body);
+  acceptUser(req.params.id, req.body).then(updatedDocument =>
+    res.status(200).send(updatedDocument)
+  );
+});
 //TODO Validation ??
 module.exports = {
   router,

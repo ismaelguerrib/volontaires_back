@@ -10,7 +10,7 @@ const updateWhat = (id, data) =>
     { $push: { userAccepting: data } },
     { new: true }
   );
-const acceptTask = (id, data) =>
+const acceptUser = (id, data) =>
   Request.findByIdAndUpdate(id, { $push: { isAccepted: data } }, { new: true });
 const deleteOne = id => Request.findByIdAndDelete(id);
 const create = data => Request.create(data);
@@ -91,7 +91,7 @@ router.patch("/accept/:id", (req, res) => {
 });
 router.patch("/isaccepted/:id", (req, res) => {
   console.log(req.body);
-  updateWhat(req.params.id, req.body).then(updatedDocument =>
+  acceptUser(req.params.id, req.body).then(updatedDocument =>
     res.status(200).send(updatedDocument)
   );
 });
