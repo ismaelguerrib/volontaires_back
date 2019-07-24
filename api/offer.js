@@ -16,6 +16,7 @@ const acceptUser = (id, data) =>
 const deleteOne = id => Offer.findByIdAndDelete(id);
 const create = data => Offer.create(data);
 const findByOwner = data => Offer.find({ userId: data });
+const findByUserAccepted = data => Offer.find({ userAccepting: data });
 const deleteOtherUsers = (id, acceptedUserId) =>
   Offer.findByIdAndUpdate(id, { userAccepting: acceptedUserId });
 
@@ -30,6 +31,16 @@ router.get("/", (req, res) => {
 router.get("/findbyowner/:id", (req, res) => {
   console.log("owner:", req.params.id);
   findByOwner(req.params.id)
+    .then(dbRes => {
+      res.status(200).send(dbRes);
+    })
+    .catch(error => res.status(500).send("Something went wrong"));
+});
+
+router.get("/requestinguser", (req, res) => {
+  console.log("user yayay", req.body);
+  console.log("user requesting:", req.params.id);
+  findByUserAccepted(req.params.id)
     .then(dbRes => {
       res.status(200).send(dbRes);
     })

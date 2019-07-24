@@ -14,10 +14,21 @@ const acceptUser = (id, data) =>
   Request.findByIdAndUpdate(id, { $push: { isAccepted: data } }, { new: true });
 const deleteOne = id => Request.findByIdAndDelete(id);
 const create = data => Request.create(data);
+const findByUserAccepted = data => Request.find({ userAccepting: data });
 const findByOwner = data => Request.find({ userId: data });
 
 router.get("/", (req, res) => {
   getAll()
+    .then(dbRes => {
+      res.status(200).send(dbRes);
+    })
+    .catch(error => res.status(500).send("Something went wrong"));
+});
+
+router.get("/requestinguser", (req, res) => {
+  console.log("user yayay", req.body);
+  console.log("user requesting:", req.params.id);
+  findByUserAccepted(req.params.id)
     .then(dbRes => {
       res.status(200).send(dbRes);
     })
