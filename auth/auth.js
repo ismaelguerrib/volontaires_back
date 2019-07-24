@@ -19,7 +19,7 @@ router.post("/signup", uploader.single("avatar"), (req, res, next) => {
 
   if (!firstname || !lastname || !password || !email)
     errorMsg = {
-      message: "Provide username and password",
+      message: "A field is missing",
       status: "warning",
       httpStatus: 403 // 403	Forbidden
     };
