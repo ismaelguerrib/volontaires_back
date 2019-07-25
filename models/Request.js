@@ -16,8 +16,8 @@ requestSchema = new mongoose.Schema({
     index: true
   },
   location: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   tags: {
     type: String,
@@ -31,10 +31,13 @@ requestSchema = new mongoose.Schema({
     ]
     // required: true
   },
-  time: {
-    type: Date
-    // required: true
-  },
+  date: String,
+  month: String,
+  year: String,
+  hour: String,
+  minute: String,
+  second: String,
+  meridiem: String,
   acceptingUser: {
     type: Array
   },

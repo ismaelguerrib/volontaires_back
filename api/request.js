@@ -28,7 +28,6 @@ router.get("/", (req, res) => {
 });
 
 router.get("/requestinguser/:id", (req, res) => {
-  console.log("user yayay", req.body);
   console.log("user requesting:", req.params.id);
   findByUserAccepted(req.params.id)
     .then(dbRes => {

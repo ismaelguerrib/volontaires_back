@@ -30,10 +30,13 @@ const offerSchema = new mongoose.Schema({
     // ]
     // required: true
   },
-  time: {
-    type: Date
-    // required: true
-  },
+  date: String,
+  month: String,
+  year: String,
+  hour: String,
+  minute: String,
+  second: String,
+  meridiem: String,
 
   userAccepting: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
