@@ -113,13 +113,13 @@ router.post("/signin", (req, res, next) => {
       // dont send sensitive informations back to the client
       // let's choose the exposed user below
 
-      const { _id: id, name, lastname, email, avatar, role } = req.user;
+      const { _id: id, firstname, lastname, email, avatar, role } = req.user;
       // next(
       res.status(200).json({
         loginStatus: true,
         user: {
           id,
-          name,
+          firstname,
           lastname,
           email,
           avatar,
@@ -140,13 +140,13 @@ router.get("/loggedin", (req, res, next) => {
   console.log("ask is loggedin ???", req.isAuthenticated());
   if (req.isAuthenticated()) {
     // method provided by passport
-    const { _id: id, name, lastname, email, avatar, role } = req.user;
+    const { _id: id, firstname, lastname, email, avatar, role } = req.user;
     return res.status(200).json({
       loginStatus: true,
       message: "authorized",
       user: {
         id,
-        name,
+        firstname,
         lastname,
         email,
         avatar,
