@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start:dev": "node ./server",
-    "start": "nodemon ./server",
+    "start:dev": "nodemon ./server",
+    "start": "node ./server",
     "dev": "DEBUG=back-app:* nodemon ./bin/www",
     "dev-windows": "nodemon ./bin/www"
   },
