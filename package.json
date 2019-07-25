@@ -27,9 +27,6 @@
     "passport-local": "^1.0.0",
     "serve-favicon": "^2.5.0"
   },
-  "devDependencies": {
-    "nodemon": "^1.12.1"
-  },
   "settings": {
     "code-runner.runInTerminal": true
   }
