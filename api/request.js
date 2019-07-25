@@ -17,7 +17,7 @@ const create = data => Request.create(data);
 const findByOwner = data => Request.find({ userId: data });
 const findByUserAccepted = data => Request.find({ userAccepting: data });
 const deleteOtherUsers = (id, acceptedUserId) =>
-  Offer.findByIdAndUpdate(id, { userAccepting: acceptedUserId });
+  Request.findByIdAndUpdate(id, { userAccepting: acceptedUserId });
 
 router.get("/", (req, res) => {
   getAll()

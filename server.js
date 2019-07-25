@@ -41,10 +41,13 @@ const offerAPI = require("./api/offer");
 const userAPI = require("./api/user");
 const requestAPI = require("./api/request");
 const feedBackAPI = require("./api/feedback");
+const chatAPI = require("./api/chat");
+
 app.use("/api/users", userAPI.router);
 app.use("/api/offers", offerAPI.router);
 app.use("/api/requests", requestAPI.router);
 app.use("/api/feedback", feedBackAPI.router);
+app.use("/api/chats", chatAPI.router);
 
 app.listen(process.env.PORT, () => {
   console.log("App hosted on: ", process.env.SITE_URL);
