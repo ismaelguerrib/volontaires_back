@@ -3,7 +3,8 @@ const router = new express.Router();
 const Request = require("../models/Request");
 const getAll = () => Request.find();
 const getOne = id => Request.findById(id);
-const updateOne = (id, data) => Request.findByIdAndUpdate(id, data);
+const updateOne = (id, data) =>
+  Request.findByIdAndUpdate(id, data, { new: true });
 const updateWhat = (id, data) =>
   Request.findByIdAndUpdate(
     id,
@@ -104,7 +105,8 @@ router.delete("/:id", (req, res) => {
 });
 
 router.patch("/:id", (req, res) => {
-  updateOne(req.params.id).then(updatedDocument =>
+  // console.log("updating ", req.body);
+  updateOne(req.params.id, req.body).then(updatedDocument =>
     res.status(200).send(updatedDocument)
   );
 });
