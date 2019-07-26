@@ -137,5 +137,13 @@ module.exports = {
   getOne,
   deleteOne,
   updateOne,
-  create
+  getAll,
+  getOne,
+  updateOne,
+  updateWhat,
+  acceptUser,
+  deleteOne,
+  create,
+  findByOwner,
+  findByUserAccepted
 };
