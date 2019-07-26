@@ -12,7 +12,7 @@ const updateWhat = (id, data) =>
     { new: true }
   );
 const acceptUser = (id, data) =>
-  Request.findByIdAndUpdate(id, { $push: { isAccepted: data } }, { new: true });
+  Request.findByIdAndUpdate(id, data, { new: true });
 const deleteOne = id => Request.findByIdAndDelete(id);
 const create = data => Request.create(data);
 const findByOwner = data => Request.find({ userId: data });
