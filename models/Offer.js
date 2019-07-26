@@ -38,7 +38,7 @@ const offerSchema = new mongoose.Schema({
   second: String,
   meridiem: String,
 
-  userAccepting: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  acceptingUser: [{ type: Schema.Types.ObjectId, ref: "User" }],
 
   isAccepted: {
     type: Boolean,

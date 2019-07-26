@@ -8,7 +8,7 @@ const updateOne = (id, data) =>
 const updateWhat = (id, data) =>
   Offer.findByIdAndUpdate(
     id,
-    { $push: { userAccepting: data } },
+    { $push: { acceptingUser: data } },
     { new: true }
   );
 const acceptUser = (id, data) =>
@@ -16,9 +16,9 @@ const acceptUser = (id, data) =>
 const deleteOne = id => Offer.findByIdAndDelete(id);
 const create = data => Offer.create(data);
 const findByOwner = data => Offer.find({ userId: data });
-const findByUserAccepted = data => Offer.find({ userAccepting: data });
+const findByUserAccepted = data => Offer.find({ acceptingUser: data });
 const deleteOtherUsers = (id, acceptedUserId) =>
-  Offer.findByIdAndUpdate(id, { userAccepting: acceptedUserId });
+  Offer.findByIdAndUpdate(id, { acceptingUser: acceptedUserId });
 
 router.get("/", (req, res) => {
   getAll()
@@ -111,7 +111,7 @@ router.patch("/:id", (req, res) => {
 });
 
 router.patch("/accept/:id", (req, res) => {
-  updateWhat(req.params.id, req.body.userAccepting).then(updatedDocument => {
+  updateWhat(req.params.id, req.body.acceptingUser).then(updatedDocument => {
     res.status(200).send(updatedDocument);
     console.log(updatedDocument);
   });
