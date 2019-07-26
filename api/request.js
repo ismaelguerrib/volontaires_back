@@ -52,7 +52,13 @@ router.post("/", (req, res) => {
     description,
     location,
     tags,
-    time,
+    date,
+    month,
+    year,
+    hour,
+    minute,
+    second,
+    meridiem,
     acceptingUser
   } = req.body;
   const newRequest = {
@@ -61,7 +67,13 @@ router.post("/", (req, res) => {
     description,
     location,
     tags,
-    time,
+    date,
+    month,
+    year,
+    hour,
+    minute,
+    second,
+    meridiem,
     acceptingUser
   };
 

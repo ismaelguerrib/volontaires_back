@@ -57,14 +57,33 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   console.log("req body tamere", req.body);
-  const { name, userId, description, location, tags, time } = req.body;
+  const {
+    name,
+    userId,
+    description,
+    location,
+    tags,
+    date,
+    month,
+    year,
+    hour,
+    minute,
+    second,
+    meridiem
+  } = req.body;
   const newOffer = {
     name,
     userId,
     description,
     location,
     tags,
-    time
+    date,
+    month,
+    year,
+    hour,
+    minute,
+    second,
+    meridiem
   };
 
   console.log("sent object", newOffer);
